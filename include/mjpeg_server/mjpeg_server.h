@@ -57,7 +57,7 @@ namespace mjpeg_server
 /* the webserver determines between these values for an answer */
 typedef enum
 {
-  A_UNKNOWN, A_STREAM, A_SNAPSHOT,
+  A_UNKNOWN, A_STREAM, A_SNAPSHOT, A_UNSUBSCRIBE
 } answer_t;
 
 /*
@@ -149,6 +149,7 @@ private:
   typedef std::map<std::string, image_transport::Subscriber> ImageSubscriberMap;
   typedef std::map<std::string, size_t> ImageSubscriberCountMap;
   typedef std::map<std::string, std::string> ParameterMap;
+  typedef std::map<std::string, bool> StopRequested;
 
   std::string header;
 
@@ -162,6 +163,12 @@ private:
    * @param output image
    */
   void invertImage(const cv::Mat& input, cv::Mat& output);
+
+  /**
+   * @brief Unsubscribe from topic
+   * @param topic name
+   */
+  void unsubscribe(const char *parameter);
 
   /**
    * @brief Send an error message.
@@ -302,7 +309,7 @@ private:
    * @param topic name string
    */
   void unregisterSubscriberIfPossible(const std::string topic);
-  
+
   ros::NodeHandle node_;
   image_transport::ImageTransport image_transport_;
   int port_;
@@ -310,13 +317,14 @@ private:
   int sd[MAX_NUM_SOCKETS];
   int sd_len;
 
-  bool stop_requested_;
   char* www_folder_;
+  bool finalize_;
 
   ImageBufferMap image_buffers_;
   ImageSubscriberMap image_subscribers_;
   ImageSubscriberCountMap image_subscribers_count_;
   boost::mutex image_maps_mutex_;
+  StopRequested stop_requested_;
 
 };
 
