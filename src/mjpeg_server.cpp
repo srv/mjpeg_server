@@ -557,7 +557,7 @@ void MJPEGServer::sendStream(int fd, const char *parameter)
       {
         quality = stringToInt(parameter_map["quality"]);
       }
-      encode_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+      encode_params.push_back(cv::IMWRITE_JPEG_QUALITY);
       encode_params.push_back(quality);
 
       // resize image
@@ -700,7 +700,7 @@ void MJPEGServer::sendSnapshot(int fd, const char *parameter)
   {
     quality = stringToInt(parameter_map["quality"]);
   }
-  encode_params.push_back(CV_IMWRITE_JPEG_QUALITY);
+  encode_params.push_back(cv::IMWRITE_JPEG_QUALITY);
   encode_params.push_back(quality);
 
   // resize image
